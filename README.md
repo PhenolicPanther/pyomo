@@ -10,6 +10,7 @@
 [![a COIN-OR project](https://www.coin-or.org/GitHub/coin-or-badge.png)](https://www.coin-or.org)
 
 ## Pyomo Overview
+FIX Interface TO SCIP
 
 Pyomo is a Python-based open-source software package that supports a
 diverse set of optimization capabilities for formulating and analyzing
