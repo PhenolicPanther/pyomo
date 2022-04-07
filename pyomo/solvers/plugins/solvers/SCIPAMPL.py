@@ -169,7 +169,7 @@ class SCIPAMPL(SystemCallSolver):
             # Now write the new options file
             # options_filename = TempfileManager.\
             #                    create_tempfile(suffix="_scip.set")
-            # SCIP8 OMAR FIX for AMPL mode:
+            # SCIP8 OMAR FIX for AMPL mode (SCIP only reads the scip.set in cwd):
             options_filename = os.getcwd()+"/"+"scip.set"
             with open(options_filename, "w") as f:
                 for line in of_opt:
