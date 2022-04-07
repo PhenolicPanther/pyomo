@@ -119,7 +119,9 @@ class SCIPAMPL(SystemCallSolver):
             else:
                 env['AMPLFUNC'] = env['PYOMO_AMPLFUNC']
 
-        cmd = [executable, problem_files[0], '-AMPL']
+        # SCIP8 OMAR FIX  in AMPL mode you SCIP does not want the .nl extension
+        #cmd = [executable, problem_files[0], '-AMPL']
+        cmd = [executable, fname, '-AMPL']  
         if self._timer:
             cmd.insert(0, self._timer)
 
@@ -146,18 +148,29 @@ class SCIPAMPL(SystemCallSolver):
             # Now check if an 'scip.set' file exists in the
             # current working directory. If so, we need to
             # make it clear that this file will be ignored.
+
+            # SCIP8 OMAR FIX for AMPL mode:
+            # default_of_name = os.path.join(os.getcwd(), 'scip.set')
+            # if os.path.exists(default_of_name):
+            #     logger.warning("A file named '%s' exists in "
+            #                    "the current working directory, but "
+            #                    "SCIP options are being set using a "
+            #                    "separate options file. The options "
+            #                    "file '%s' will be ignored."
+            #                    % (default_of_name, default_of_name))
+
             default_of_name = os.path.join(os.getcwd(), 'scip.set')
             if os.path.exists(default_of_name):
-                logger.warning("A file named '%s' exists in "
-                               "the current working directory, but "
-                               "SCIP options are being set using a "
-                               "separate options file. The options "
-                               "file '%s' will be ignored."
-                               % (default_of_name, default_of_name))
+                logger.warning("A scip.set '%s' already exist in "
+                               "the current working directory,"
+                               "in AMPL mode Pyomo will overwrite it"
+                               % (default_of_name))
 
             # Now write the new options file
-            options_filename = TempfileManager.\
-                               create_tempfile(suffix="_scip.set")
+            # options_filename = TempfileManager.\
+            #                    create_tempfile(suffix="_scip.set")
+            # SCIP8 OMAR FIX for AMPL mode:
+            options_filename = os.getcwd()+"/"+"scip.set"
             with open(options_filename, "w") as f:
                 for line in of_opt:
                     f.write(line+"\n")
